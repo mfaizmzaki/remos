@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LecturerController;
+use App\Http\Controllers\PanelController;
+use App\Http\Controllers\PGOfficeController;
+use App\Http\Controllers\StudentController;
+use App\Http\Middleware\PGOffice;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,5 +26,26 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
+
+Route::get('/admin', [AdminController::class, 'index'])
+    ->middleware('admin')
+    ->name('admin');
+
+Route::get('/student', [StudentController::class, 'index'])
+    ->middleware('student')
+    ->name('student');
+
+Route::get('/lecturer', [LecturerController::class, 'index'])
+    ->middleware('lecturer')
+    ->name('lecturer');
+
+Route::get('/panel', [PanelController::class, 'index'])
+    ->middleware('panel')
+    ->name('panel');
+
+Route::get('/PGOffice', [PGOfficeController::class, 'index'])
+    ->middleware('pgoffice')
+    ->name('pgoffice');
+
 
 require __DIR__.'/auth.php';

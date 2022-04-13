@@ -23,7 +23,25 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                $role_name = Auth::user()->role->role_name;
+
+            switch($role_name){
+                case('Admin'):
+                    return redirect()->route('admin');
+                    break;
+                case('Student'):
+                    return redirect()->route('student');
+                    break;
+                case('Lecturer'):
+                    return redirect()->route('lecturert');
+                    break;
+                case('Panel'):
+                    return redirect()->route('panel');
+                    break;
+                case('PGOffice'):
+                    return redirect()->route('pgoffice');
+                    break;
+            }
             }
         }
 

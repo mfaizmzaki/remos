@@ -20,6 +20,10 @@
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
 
+            @if (config('app.debug'))
+                @include('sudosu::user-selector')
+            @endif
+
             <!-- Page Heading -->
             <header class="bg-white shadow">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
