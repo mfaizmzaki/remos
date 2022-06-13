@@ -45,8 +45,9 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<nobr><b>REMOS</b> Application System</nobr>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'fsktm_logo_img' => 'vendor/adminlte/dist/img/fsktm_logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -231,10 +232,14 @@ return [
             'text'         => 'search',
             'topnav_right' => true,
         ],
+      
         [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
+
+        
+        
 
         // Sidebar items:
         [
@@ -254,6 +259,11 @@ return [
             'label_color' => 'success',
         ],
         ['header' => 'account_settings'],
+        [
+            'text' => 'Switch User',
+            'url'  => 'switchuser',
+            'icon' => 'fas fa-fw fa-user',
+        ],
         [
             'text' => 'profile',
             'url'  => 'admin/settings',
@@ -301,6 +311,18 @@ return [
                     'url'  => '#',
                 ],
             ],
+        ],
+        [
+            'text'       => 'Student',
+            'url'        => '/student',
+            'icon' => 'fas fa-fw fa-user',
+            'can' => ['isStudent'],   
+        ],
+        [
+            'text'       => 'Admin',
+            'url'        => '/admin',
+            'icon' => 'fas fa-fw fa-user',
+            'can' => ['isAdmin'],   
         ],
         ['header' => 'labels'],
         [
@@ -356,21 +378,21 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
                 ],
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
                 ],
             ],

@@ -7,12 +7,13 @@
 @stop
 
 @section('content')
+
 <div class="row">
     <div class="col-md-3">
         <div class="info-box shadow-none">
             <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
             <div class="info-box-content">
-                <span class="info-box-text">Shadows</span>
+                <span class="info-box-text">Faiz</span>
                 <span class="info-box-number">None</span>
             </div>
             <!-- /.info-box-content -->

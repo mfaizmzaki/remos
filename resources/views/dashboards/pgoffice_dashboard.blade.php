@@ -1,17 +1,267 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('adminlte::page')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    PG Office Dashboard
-                </div>
+@section('title', 'Dashboard')
+
+@section('content_header')
+<h1>Postgraduate Office Dashboard</h1>
+@stop
+
+@section('content')
+@if(session('user_is_switched'))
+<div class="alert alert-warning">
+    You are currently logged in as a different user. <a href="{{ route('user.restore') }}">Click here</a> to restore your login.
+</div>
+@endif
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <strong>Quick Utility Function Buttons</strong>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <button type="button" class="btn btn-block btn-outline-primary btn-sm">Add new REMOS event</button>
+                <button type="button" class="btn btn-block btn-outline-primary btn-sm">Add new lecturer or panel to REMOS event</button>
+                <button type="button" class="btn btn-block btn-outline-primary btn-sm">Add new student to REMOS event</button>
             </div>
         </div>
     </div>
-</x-app-layout>
+    <div class="col-md-6 col-sm-12">
+        <div class="row">
+            <div class="info-box">
+                <span class="info-box-icon bg-success"><i class="far fa-user"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text mt-1">Total registered students in the system</span>
+                    <span class="info-box-number mb-3">1,410</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <div class="row">
+            <div class="info-box">
+                <span class="info-box-icon bg-success"><i class="far fa-user"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Total registered staffs in the system</span>
+                    <span class="info-box-number mb-2">1,410</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3 col-sm-12">
+        <!-- Widget: user widget style 2 -->
+        <div class="card card-widget widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-info">
+                <!-- /.widget-user-image -->
+                <center>
+                    <h4>Computer Systems and Networking</h4>
+                </center>
+            </div>
+            <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Upcoming REMOS <span class="float-right badge bg-primary">31 April 2022</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Registered Candidates <span class="float-right badge bg-info">5</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Unassigned REMOS <span class="float-right badge bg-danger">12</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Pending Results <span class="float-right badge bg-danger">842</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.widget-user -->
+    </div>
+
+    <div class="col-md-3 col-sm-12">
+        <!-- Widget: user widget style 2 -->
+        <div class="card card-widget widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-info">
+                <!-- /.widget-user-image -->
+                <center>
+                    <h4>Artificial Intelligence</h4><br>
+                </center>
+            </div>
+            <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Upcoming REMOS <span class="float-right badge bg-primary">31 April 2022</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Registered Candidates <span class="float-right badge bg-info">5</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Unassigned REMOS <span class="float-right badge bg-danger">12</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Pending Results <span class="float-right badge bg-danger">842</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.widget-user -->
+    </div>
+
+    <div class="col-md-3 col-sm-12">
+        <!-- Widget: user widget style 2 -->
+        <div class="card card-widget widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-info">
+                <!-- /.widget-user-image -->
+                <center>
+                    <h4>Software Engineering</h4><br>
+                </center>
+            </div>
+            <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Upcoming REMOS <span class="float-right badge bg-primary">31 April 2022</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Registered Candidates <span class="float-right badge bg-info">5</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Unassigned REMOS <span class="float-right badge bg-danger">12</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Pending Results <span class="float-right badge bg-danger">842</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.widget-user -->
+    </div>
+
+    <div class="col-md-3 col-sm-12">
+        <!-- Widget: user widget style 2 -->
+        <div class="card card-widget widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-info">
+                <!-- /.widget-user-image -->
+                <center>
+                    <h4>Information Systems</h4><br>
+                </center>
+            </div>
+            <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Upcoming REMOS <span class="float-right badge bg-primary">31 April 2022</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Registered Candidates <span class="float-right badge bg-info">5</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Unassigned REMOS <span class="float-right badge bg-danger">12</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Pending Results <span class="float-right badge bg-danger">842</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.widget-user -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card bg-info">
+            <div class="card-header">
+                <h3 class="card-title">Upcoming REMOS Events</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <!-- /.card-header -->
+            <div class="card-body">
+
+                @php
+                $heads = [
+                'Event',
+                'Department',
+                ['label' => 'Venue', 'width' => 30],
+                ['label' => 'Actions', 'no-export' => true, 'width' => 15],
+                ];
+
+                $btnUpdate = '<button class="btn btn-xs btn-default text-primary mx-1" title="Update" data-toggle="modal" data-target="#update-interest">
+                    <i class="fa fa-lg fa-fw fa-pen"></i>
+                </button>';
+                $btnDelete = '<button class="btn btn-xs btn-default text-danger mx-1" title="Delete">
+                    <i class="fa fa-lg fa-fw fa-trash"></i>
+                </button>';
+                $btnDetails = '<button class="btn btn-xs btn-default text-teal mx-1" title="Details">
+                    <i class="fa fa-lg fa-fw fa-eye"></i>
+                </button>';
+                @endphp
+
+                {{-- Minimal example / fill data using the component slot --}}
+                <x-adminlte-datatable id="table1" :heads="$heads">
+                    <tr>
+                        <td>ok</td>
+                        <td>asd</td>
+                        <td>asd</td>
+                        <td>
+                            <nobr>kurr</nobr>
+                        </td>
+                    </tr>
+                </x-adminlte-datatable>
+            </div>
+        </div>
+    </div>
+</div>
+
+@stop
+
+@section('css')
+<link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+@section('js')
+<script>
+    console.log('Hi!');
+</script>
+@stop

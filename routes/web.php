@@ -5,8 +5,10 @@ use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PGOfficeController;
 use App\Http\Controllers\StudentController;
-use App\Http\Middleware\PGOffice;
+use App\Http\Controllers\UserSwitchController;
+use App\Models\Interest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('redirects');
 });
 
 Route::get('/dashboard', function () {
@@ -46,6 +48,22 @@ Route::get('/panel', [PanelController::class, 'index'])
 Route::get('/PGOffice', [PGOfficeController::class, 'index'])
     ->middleware('pgoffice')
     ->name('pgoffice');
+
+
+Route::post('/interest/new-interest', [Interest::class, 'create'])->name('create_interest');
+Route::get('/interest/{interest_id}', [Interest::class, 'show'])->name('show_interest');
+Route::post('/interest/{interest_id}', [Interest::class], 'update')->name('update_interest');
+Route::delete('/interest/{interest_id}', [Interest::class], 'destroy')->name('destroy_interest');
+
+
+Route::get('redirects', 'App\Http\Controllers\HomeController@index')->name('redirects');
+
+
+// TEMPORARY REMOVE IN PRODUCTION
+Route::get('switchuser', [UserSwitchController::class,'index'])->name('user.switch');
+Route::post('switchuser', [UserSwitchController::class,'switchUser']);
+Route::get('restoreuser', [UserSwitchController::class, 'restoreUser'])->name('user.restore');
+// TEMPORARY REMOVE IN PRODUCTION
 
 
 require __DIR__.'/auth.php';
