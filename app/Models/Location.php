@@ -5,13 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Location extends Model
 {
     use HasFactory;
-
-    public function user(){
-        return $this->hasMany(User::class);
-    }
 
     public function event(){
         return $this->hasMany(Event::class);

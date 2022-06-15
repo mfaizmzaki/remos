@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PGOfficeController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSwitchController;
 use App\Models\Interest;
 use Illuminate\Support\Facades\Route;
@@ -25,9 +27,9 @@ Route::get('/', function () {
     return redirect()->route('redirects');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware('auth')->name('dashboard');
 
 Route::get('/admin', [AdminController::class, 'index'])
     ->middleware('admin')
@@ -49,6 +51,11 @@ Route::get('/PGOffice', [PGOfficeController::class, 'index'])
     ->middleware('pgoffice')
     ->name('pgoffice');
 
+Route::get('/event/create-event', [EventController::class, 'index'])->name('create_event');
+Route::post('/event/create-event', [EventController::class, 'create']);
+
+Route::get('/users/create-user', [UserController::class, 'index'])->name('create_user');
+Route::post('/users/create-user', [UserController::class, 'create']);
 
 Route::post('/interest/new-interest', [Interest::class, 'create'])->name('create_interest');
 Route::get('/interest/{interest_id}', [Interest::class, 'show'])->name('show_interest');

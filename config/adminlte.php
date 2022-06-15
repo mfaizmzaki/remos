@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'REMOS FSKTM',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -246,22 +246,15 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
-        [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
-        [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
         ['header' => 'account_settings'],
         [
             'text' => 'Switch User',
             'url'  => 'switchuser',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'text' => 'Home',
+            'url'  => '/',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
@@ -323,22 +316,6 @@ return [
             'url'        => '/admin',
             'icon' => 'fas fa-fw fa-user',
             'can' => ['isAdmin'],   
-        ],
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
         ],
     ],
 

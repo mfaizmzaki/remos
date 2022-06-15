@@ -39,6 +39,7 @@
 
             {{-- User menu link --}}
             @if(Auth::user())
+                {{ \Carbon\Carbon::now()->toDateString() }}
                 @if(config('adminlte.usermenu_enabled'))
                     @include('adminlte::partials.navbar.menu-item-dropdown-user-menu')
                 @else

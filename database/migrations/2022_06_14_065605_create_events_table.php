@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             
             $table->foreignId('department_id')
+                ->constrained()
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
             
@@ -24,6 +25,7 @@ return new class extends Migration
 
             $table->foreignId('location_id')
                 ->nullable()
+                ->constrained()
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
 
