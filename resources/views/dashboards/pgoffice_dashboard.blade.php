@@ -8,8 +8,9 @@
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             {{ session('store_message') }}
         </div>
+        {{ Session::forget('store_message') }}
     @endif
-
+    
     <h1>Postgraduate Office Dashboard</h1>
 @stop
 
@@ -257,7 +258,7 @@
                                 <td>{{ $event->department->department_name }}</td>
                                 <td>{{ $event->location->location_name }}</td>
                                 <td>{{ $event->date }} {{ $event->time }}</td>
-                                <td>{{ $event->chair</td>
+                                <td>{{ $event->user->name }}</td>
                                 <td>
                                     <nobr>kurr</nobr>
                                 </td>

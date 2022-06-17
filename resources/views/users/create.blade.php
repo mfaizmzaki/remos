@@ -22,40 +22,110 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form action="{{ route('create_user') }}" method="POST">
-                  @csrf
+                <form action="{{ url('/register') }}" method="post">
+                    @csrf
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name">Full Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter full name" required>
-                          </div>
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" 
+                                placeholder="Enter full name">
+
+                            @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
                         <div class="form-group">
                             <label for="email">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
-                          </div>
-                          <div class="form-group">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" name="email" placeholder="Enter email">
+
+                            @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter Default Password (IC/Passport Number)">
-                          </div>
-                          <div class="form-group">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter default password (IC/Passport Number)">
+                        
+                            @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="password_confirmation">Password Confirmation</label>
+                            <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation"
+                                placeholder="Enter default password (IC/Passport Number)">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Staff/Student ID</label>
+                            <input type="text" class="form-control @error('matric') is-invalid @enderror" name="matric" value="{{ old('matric') }}" placeholder="Enter matric number (E.g. 17001234)">
+
+                            @error('matric')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label for="role">Department</label>
-                            <select class="custom-select rounded-0" name="department" required>
+                            <select class="custom-select rounded-0 @error('department') is-invalid @enderror" name="department">
                                 <option value="" disabled selected hidden>Choose Department</option>
                                 <@foreach ($departments as $department)
-                                    <option value={{ $department->id }}>{{ $department->department_name }}</option>
-                                @endforeach
+                                    <option value={{ $department->id }} @if (old('department') == $department->id) {{ 'selected' }} @endif>{{ $department->department_name }}</option>
+                                    @endforeach
                             </select>
+
+                            @error('department')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
-                          <div class="form-group">
+                        <div class="form-group">
                             <label for="role">Role</label>
-                            <select class="custom-select rounded-0" name="role" required>
-                                <option value="" disabled selected hidden>Choose Role</option>
+                            <select class="custom-select rounded-0 @error('role') is-invalid @enderror" name="role" id="role">
+                                <option value="" disabled selected hidden>Choose role</option>
                                 <@foreach ($roles as $role)
-                                    <option value={{ $role->id }}>{{ $role->role_name }}</option>
-                                @endforeach
+                                    <option value={{ $role->id }} @if (old('role') == $role->id) {{ 'selected' }} @endif>{{ $role->role_name }}</option>
+                                    @endforeach
                             </select>
+
+                            @error('role')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
+                        <div class="form-group" id="program" style="display: none">
+                            <label for="program">Program</label>
+                            <select class="custom-select rounded-0 @error('program') is-invalid @enderror" name="program">
+                                <option value="" disabled selected hidden>Choose program</option>
+                                <option value="PhD" @if (old('program') == "PhD") {{ 'selected' }} @endif>PhD</option>
+                                <option value="Master by Research" @if (old('program') == "Master by Research")  {{ 'selected' }} @endif>Master by Research</option>
+                                <option value="Master by Coursework" @if (old('program') == "Master by Coursework") {{ 'selected' }} @endif>Master by Coursework</option>
+                            </select>
+
+                            @error('program')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="form-group" id="semester" style="display: none">
+                            <label for="semester">Current Semester</label>
+                            <input type="text" class="form-control @error('semester') is-invalid @enderror" name="semester" value="{{ old('semester') }}" placeholder="Enter current semester: Numbers only">
                         
+                            @error('semester')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
                     </div>
                     <!-- /.card-body -->
 
@@ -70,27 +140,31 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-    <link rel="stylesheet" href="{{ asset('vendor/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-    <style>
-        .select2-container .select2-selection--single {
-            height: 38px !important;
-        }
-    </style>
-
 @stop
 
 @section('js')
-    <script src="{{ asset('vendor/select2/js/select2.full.min.js') }}"></script>
     <script>
-        $(function() {
-            //Initialize Select2 Elements
-            $('.select2').select2()
-
-            $('.select2bs4').select2({
-                theme: 'bootstrap4'
-            })
-        })
+        $(document).ready(function(){
+            $('#role').change(function(){
+                if($(this).val() == "1"){
+                    $('#program').show();
+                    $('#semester').show();
+                }
+                else{
+                    $('#program').hide();
+                    $('#semester').hide();
+                }
+            });
+            
+            var role = $('#role').val();
+            if(role == "1"){
+                $('#program').show();
+                $('#semester').show();
+            }
+            else{
+                $('#program').hide();
+                $('#semester').hide();
+            }     
+        });
     </script>
 @stop

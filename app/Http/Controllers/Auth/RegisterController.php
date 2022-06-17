@@ -40,7 +40,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('pgoffice');
     }
 
     /**
@@ -52,14 +52,14 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'min:5'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'matric' => ['required', 'string', 'max:10'],
-            'program' => ['required', 'string'],
-            'mode' => ['required', 'string'],
-            'current_sem' => ['required', 'integer', 'min:0', 'lte:12'],
-            'dept' => ['required', 'integer'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'matric' => ['required', 'digits_between:8,10', 'unique:students,matric_id'],
+            'program' => ['required'],
+            'semester' => ['required', 'numeric', 'digits_between:1,2', 'max:12'],
+            'department' => ['required'],
+            'role' => ['required'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
 
@@ -71,22 +71,24 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role_id' => 1,
-            'department_id' => $data['dept'],
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
+            'role_id' => $data['role'],
+            'department_id' => $data['department'],
+            
         ]);
 
-        Student::create([
-            'user_id' => $user['id'],
-            'matric_id' => $data['matric'],
-            'program' => $data['program'],
-            'current_semester' => $data['current_sem'],
-            'mode_program' => $data['mode']
-        ]);
-
-        return $user;
+        if($data['role'] == "1"){
+            Student::create([
+                'user_id' => User::where('email', $data['email'])->value('id'),
+                'matric_id' => $data['matric'],
+                'program' => $data['program'],
+                'current_semester' => $data['semester'],
+                'mode_program' => "bingo"
+            ]);
+        }
     }
 }
