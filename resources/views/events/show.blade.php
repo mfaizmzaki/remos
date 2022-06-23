@@ -3,13 +3,21 @@
 @section('title', 'Event')
 
 @section('content_header')
-@if (session('registration_message'))
-<div class="alert alert-success alert-dismissible">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    {{ session('registration_message') }}
-</div>
-{{ Session::forget('registration_message') }}
-@endif
+    @if (session('registration_message'))
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ session('registration_message') }}
+        </div>
+        {{ Session::forget('registration_message') }}
+    @endif
+    <style>
+        #the-count {
+            float: right;
+            padding: 0.1rem 0 0 0;
+            font-size: 0.875rem;
+        }
+    </style>
+
 @stop
 
 @section('content')
@@ -80,8 +88,7 @@
                     <div class="row">
                         <div class="col-md-12 mt-5 mb-3 text-right">
                             <a href="#" class="btn btn-sm btn-primary">Edit event</a>
-                            <button type="button" class="btn btn-sm btn-warning"
-                                data-toggle="modal"
+                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal"
                                 data-target="#modal-student">Add students to event</button>
                         </div>
                     </div>
@@ -95,8 +102,10 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add student to <strong>REMOS ({{ $event->date->format('F Y') }})</strong> by Department of
-                        <strong>{{ $event->department->department_name }}</strong></h5>
+                    <h5 class="modal-title">Add student to <strong>REMOS ({{ $event->date->format('F Y') }})</strong> by
+                        Department of
+                        <strong>{{ $event->department->department_name }}</strong>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -114,7 +123,7 @@
                                         {{ $student->name }}</option>
                                 @endforeach
                             </select>
-
+                            <small>Only students in the respective department are listed</small>
                             @error('student')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -153,8 +162,12 @@
                         </div>
                         <div class="form-group">
                             <label>Abstract</label>
-                            <textarea class="form-control @error('abstract') is-invalid @enderror" rows="5" name="abstract"></textarea>
-
+                            <textarea class="form-control @error('abstract') is-invalid @enderror" rows="5" id="abstract" name="abstract"></textarea>
+                            <small>Not more than 500 words</small>
+                            <div id="the-count">
+                                <span id="current">0</span>
+                                <span id="maximum">/ 500</span>
+                            </div>
                             @error('abstract')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -169,7 +182,7 @@
                                     <option value="{{ $lecturer->id }}">{{ $lecturer->name }}</option>
                                 @endforeach
                             </select>
-
+                            <small>Maximum of two supervisors</small>
                             @error('supervisor')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -183,6 +196,7 @@
                                 <label class="custom-file-label" for="report">Choose file</label>
                                 <input type="file" class="@error('report') is-invalid @enderror custom-file-input "
                                     name="report" id="reportFileName" onchange="setfilename(this.value);">
+                                <small>File format allowed: PDF or DOCX only (&lt5MB)</small>
                                 @error('report')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -234,5 +248,35 @@
         @if (count($errors) > 0)
             $('#modal-student').modal('show');
         @endif
+
+        
+        counter = function(){
+            var value = $('#abstract').val();
+            var regex = /\s+/gi;
+            var wordCount = value.trim().replace(regex, ' ').split(' ').length;
+
+            current = $('#current'),
+            maximum = $('#maximum'),
+            theCount = $('#the-count');
+
+            current.text(wordCount);
+
+            if (wordCount >= 400) {
+                maximum.css('color', '#8f0001');
+                current.css('color', '#8f0001');
+                theCount.css('font-weight', 'bold');
+            } else {
+                maximum.css('color', '#666');
+                theCount.css('font-weight', 'normal');
+            }
+        };
+
+        $(document).ready(function() {
+            $('#abstract').change(counter);
+            $('#abstract').keypress(counter);
+        });
+
+
+        
     </script>
 @stop

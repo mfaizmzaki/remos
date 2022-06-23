@@ -51,7 +51,6 @@ class EventController extends Controller
     {
         $event = Event::create([
             'department_id' => $request->department,
-            'event_mode' => $request->eventMode,
             'location_id' => $request->location,
             'date' => $request->date,
             'time' => $request->time,

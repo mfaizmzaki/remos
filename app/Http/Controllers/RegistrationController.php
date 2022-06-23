@@ -52,7 +52,7 @@ class RegistrationController extends Controller
             'event_id' => ['required'],
             'eventMode' => ['required', 'string'],
             'title' => ['nullable', 'string', 'max:255'],
-            'abstract' => ['nullable','string'],
+            'abstract' => ['nullable','string', 'maxwords:500'],
             'report' => ['nullable', 'mimes:pdf,docx', 'max:5000'],
             'supervisor' => ['required', 'array', 'max:2']
         ]);
