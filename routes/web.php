@@ -5,6 +5,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PGOfficeController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSwitchController;
@@ -51,8 +52,9 @@ Route::get('/PGOffice', [PGOfficeController::class, 'index'])
     ->middleware('pgoffice')
     ->name('pgoffice');
 
-Route::get('/event/create-event', [EventController::class, 'index'])->name('create_event');
-Route::post('/event/create-event', [EventController::class, 'create']);
+Route::resource('events', EventController::class);
+
+Route::resource('registrations', RegistrationController::class);
 
 Route::get('/users/create-user', [UserController::class, 'index'])->name('create_user');
 Route::post('/users/create-user', [UserController::class, 'create']);

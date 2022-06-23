@@ -18,21 +18,30 @@
         <div class="col-md-6">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Create Event</h3>
+                    <h3 class="card-title">Add Students to Event</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form action="{{ route('events.store') }}" method="POST">
+                <form action="{{ route('registrations.store') }}" method="POST">
                   @csrf
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="exampleSelectRounded0">Department</label>
+                            <label for="exampleSelectRounded0">Student Name</label>
                             <select class="custom-select rounded-0" name="department" required>
-                                <option value="" disabled selected hidden>Choose Department</option>
-                                @foreach ($departments as $department)
-                                    <option value={{ $department->id }}>{{ $department->department_name }}
+                                <option value="" disabled selected hidden>Choose Student</option>
+                                @foreach ($students as $student)
+                                    <option value={{ $student->id }}>{{ $student->name }}
                                     </option>
                                 @endforeach
+                            </select>
+                        </div>
+                        {{-- <div class="form-group">
+                            <label for="eventMode">Event Mode</label>
+                            <select class="custom-select rounded-0" name="eventMode" required>
+                                <option value="" disabled selected hidden>Choose Event Mode</option>
+                                <option value="Proposal Defence">Proposal Defence</option>
+                                <option value="Candidature Defence">Candidature Defence</option>
+                                <option value="Thesis Seminar">Thesis Seminar</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -68,7 +77,7 @@
                               <option value="{{ $lecturer->id }}">{{ $lecturer->name }}</option>
                               @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                     <!-- /.card-body -->
 

@@ -12,7 +12,6 @@ class Event extends Model
 
     protected $fillable = [
         'department_id',
-        'event_mode',
         'location_id',
         'date',
         'time',
@@ -20,7 +19,8 @@ class Event extends Model
     ];
 
     public function getDateAttribute($value){
-        return Carbon::parse($value)->format('d/m/Y');
+
+        return Carbon::parse($value);
     }
 
     public function getTimeAttribute($value){
@@ -36,6 +36,10 @@ class Event extends Model
 
     public function user(){
         return $this->belongsTo(User::class, 'chair_id');
+    }
+
+    public function registration(){
+        return $this->hasMany(Registration::class);
     }
 
 }

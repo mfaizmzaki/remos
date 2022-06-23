@@ -29,7 +29,7 @@
                     <strong>Quick Utility Function Buttons</strong>
                 </div>
                 <div class="card-body d-flex flex-column">
-                    <a class="btn btn-block btn-outline-primary btn-sm" href="{{ route('create_event') }}">Add new REMOS
+                    <a class="btn btn-block btn-outline-primary btn-sm" href="{{ route('events.create') }}">Add new REMOS
                         event</a>
                     <a class="btn btn-block btn-outline-primary btn-sm" href="{{ route('create_user') }}">Create new REMOS user</a>
                     <button type="button" class="btn btn-block btn-outline-primary btn-sm">Add new lecturer or panel to
@@ -233,7 +233,7 @@
                 <div class="card-body">
 
                     @php
-                        $heads = ['Event', 'Department', ['label' => 'Venue', 'width' => 20], ['label' => 'Date and Time', 'width' => 20], 'Chair', ['label' => 'Actions', 'no-export' => true, 'width' => 15]];
+                        $heads = ['Department', ['label' => 'Venue', 'width' => 20], ['label' => 'Date and Time', 'width' => 20], 'Chair', ['label' => 'Actions', 'no-export' => true, 'width' => 15]];
                         
                         $btnUpdate = '<button class="btn btn-xs btn-default text-primary mx-1" title="Update" data-toggle="modal" data-target="#update-interest">
                                 <i class="fa fa-lg fa-fw fa-pen"></i>
@@ -254,13 +254,14 @@
                     <x-adminlte-datatable id="event_table" :heads="$heads" :config="$config">
                         @foreach ($events as $event)
                             <tr>
-                                <td>{{ $event->event_mode }}</td>
                                 <td>{{ $event->department->department_name }}</td>
                                 <td>{{ $event->location->location_name }}</td>
-                                <td>{{ $event->date }} {{ $event->time }}</td>
+                                <td>{{ $event->date->format('d/m/Y') }} {{ $event->time }}</td>
                                 <td>{{ $event->user->name }}</td>
                                 <td>
-                                    <nobr>kurr</nobr>
+                                    <nobr>
+                                        <a class="btn btn-xs btn-default text-primary mx-1" title="Details" href="{{ route('events.show', $event->id) }}"><i class="fa fa-lg fa-fw fa-eye"></i></a>
+                                    </nobr>
                                 </td>
                             </tr>
     @endforeach

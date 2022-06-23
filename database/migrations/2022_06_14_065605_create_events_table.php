@@ -20,8 +20,6 @@ return new class extends Migration
                 ->constrained()
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
-            
-            $table->string('event_mode');
 
             $table->foreignId('location_id')
                 ->nullable()
