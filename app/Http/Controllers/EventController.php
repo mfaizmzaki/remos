@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Department;
 use App\Models\Event;
 use App\Models\Location;
+use App\Models\Student;
 use App\Models\User;
 
 class EventController extends Controller
@@ -69,7 +70,7 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
-        $students =  User::where('role_id', 1)->where('department_id', $event->department_id)->get();
+        $students = Student::whereRelation('user', 'department_id', $event->department_id)->get();
         $lecturers = User::where('role_id', 3)->get();
 
         return view('events.show', ['event'=>$event, 'students'=>$students, 'lecturers'=>$lecturers]);

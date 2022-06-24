@@ -65,26 +65,41 @@
         </div>
     </div>
     <div class="row">
+        @foreach ($departments as $department)
         <div class="col-md-3 col-sm-12">
             <!-- Widget: user widget style 2 -->
             <div class="card card-widget widget-user-2">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header bg-info">
+                <div class="widget-user-header bg-info px-2">
                     <!-- /.widget-user-image -->
                     <center>
-                        <h4>Computer Systems and Networking</h4>
+                        <h5>{{ $department->department_name }}</h5>
                     </center>
                 </div>
+                @php
+                    $upcomingREMOS = $department->event->where('date', '>', Carbon\Carbon::now());
+                @endphp
                 <div class="card-footer p-0">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                Upcoming REMOS <span class="float-right badge bg-primary">31 April 2022</span>
+                                Upcoming REMOS 
+                                @if (count($upcomingREMOS) > 0)
+                                <span class="float-right badge bg-primary">{{ $department->event->where('date', '>', Carbon\Carbon::now())->sortBy('date')->first()->date->format('d/m/Y') }} 
+                                    - <small>{{ $department->event->where('date', '>', Carbon\Carbon::now())->sortBy('date')->first()->date->diffForHumans() }}</small></span>
+                                @else
+                                <span class="float-right badge bg-primary">No upcoming event</span>
+                                @endif
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                Registered Candidates <span class="float-right badge bg-info">5</span>
+                                Registered Candidates
+                                @if (count($upcomingREMOS) > 0)
+                                <span class="float-right badge bg-info">{{ count($upcomingREMOS->sortBy('date')->first()->registration) }}</span>
+                                @else
+                                <span class="float-right badge bg-info">0</span>
+                                @endif
                             </a>
                         </li>
                         <li class="nav-item">
@@ -102,120 +117,7 @@
             </div>
             <!-- /.widget-user -->
         </div>
-
-        <div class="col-md-3 col-sm-12">
-            <!-- Widget: user widget style 2 -->
-            <div class="card card-widget widget-user-2">
-                <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header bg-info">
-                    <!-- /.widget-user-image -->
-                    <center>
-                        <h4>Artificial Intelligence</h4><br>
-                    </center>
-                </div>
-                <div class="card-footer p-0">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Upcoming REMOS <span class="float-right badge bg-primary">31 April 2022</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Registered Candidates <span class="float-right badge bg-info">5</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Unassigned REMOS <span class="float-right badge bg-danger">12</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Pending Results <span class="float-right badge bg-danger">842</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- /.widget-user -->
-        </div>
-
-        <div class="col-md-3 col-sm-12">
-            <!-- Widget: user widget style 2 -->
-            <div class="card card-widget widget-user-2">
-                <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header bg-info">
-                    <!-- /.widget-user-image -->
-                    <center>
-                        <h4>Software Engineering</h4><br>
-                    </center>
-                </div>
-                <div class="card-footer p-0">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Upcoming REMOS <span class="float-right badge bg-primary">31 April 2022</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Registered Candidates <span class="float-right badge bg-info">5</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Unassigned REMOS <span class="float-right badge bg-danger">12</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Pending Results <span class="float-right badge bg-danger">842</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- /.widget-user -->
-        </div>
-
-        <div class="col-md-3 col-sm-12">
-            <!-- Widget: user widget style 2 -->
-            <div class="card card-widget widget-user-2">
-                <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header bg-info">
-                    <!-- /.widget-user-image -->
-                    <center>
-                        <h4>Information Systems</h4><br>
-                    </center>
-                </div>
-                <div class="card-footer p-0">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Upcoming REMOS <span class="float-right badge bg-primary">31 April 2022</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Registered Candidates <span class="float-right badge bg-info">5</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Unassigned REMOS <span class="float-right badge bg-danger">12</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Pending Results <span class="float-right badge bg-danger">842</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- /.widget-user -->
-        </div>
+        @endforeach
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -264,7 +166,7 @@
                                     </nobr>
                                 </td>
                             </tr>
-    @endforeach
+                        @endforeach
                         </x-adminlte-datatable>
                     </div>
                 </div>

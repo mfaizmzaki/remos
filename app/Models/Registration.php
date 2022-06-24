@@ -22,7 +22,7 @@ class Registration extends Model
 
 
     public function student(){
-        return $this->belongsTo(User::class, 'student_id');
+        return $this->belongsTo(Student::class, 'student_id', 'user_id');
     }
 
     public function supervisor_1(){

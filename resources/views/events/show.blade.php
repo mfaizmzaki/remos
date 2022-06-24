@@ -40,7 +40,7 @@
                             <div class="info-box bg-light">
                                 <div class="info-box-content">
                                     <span class="info-box-text text-center text-muted">Students Registered</span>
-                                    <span class="info-box-number text-center text-muted mb-0">2300</span>
+                                    <span class="info-box-number text-center text-muted mb-0">{{ count($event->registration) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                             <div class="info-box bg-light">
                                 <div class="info-box-content">
                                     <span class="info-box-text text-center text-muted">Reports Submitted</span>
-                                    <span class="info-box-number text-center text-muted mb-0">2300</span>
+                                    <span class="info-box-number text-center text-muted mb-0">{{ count($event->registration->where('report_upload_path', '!=', null)) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -61,11 +61,6 @@
                                     value="{{ $event->department->department_name }}" />
                             </div>
                             <div class="form-group">
-                                <label>Event Mode</label>
-                                <input type="text" class="form-control" id="eventMode"
-                                    value="{{ $event->event_mode }}" />
-                            </div>
-                            <div class="form-group">
                                 <label>Location</label>
                                 <input type="text" class="form-control" id="location"
                                     value="{{ $event->location->location_name }}" />
@@ -73,7 +68,7 @@
                             <div class="form-group">
                                 <label>Date and Time</label>
                                 <input type="text" class="form-control" id="dateTime"
-                                    value="{{ $event->date }} {{ $event->time }}" />
+                                    value="{{ $event->date->format('d/m/Y') }} {{ $event->time }}" />
                             </div>
                             <div class="form-group">
                                 <label>Chair</label>
@@ -83,10 +78,56 @@
                         </div>
                         <div class="col-md-8">
                             <strong>Registered Students</strong>
+                            <div class="card">
+                                <!-- /.card-header -->
+                                <div class="card-body">
+
+                                    @php
+                                        $heads = [['label' => 'Student Name', 'width' => 30],
+                                                  ['label' => 'Matric ID', 'width' => 15],   
+                                                  ['label' => 'Current Semester', 'width' => 10], 
+                                                  ['label' => 'Event Mode', 'width' => 15], 
+                                                  ['label' => 'Actions', 'no-export' => true, 'width' => 20]];
+                                        
+                                        $btnUpdate = '<button class="btn btn-xs btn-default text-primary mx-1" title="Update" data-toggle="modal" data-target="#update-interest">
+                                                            <i class="fa fa-lg fa-fw fa-pen"></i>
+                                                        </button>';
+                                        $btnDelete = '<button class="btn btn-xs btn-default text-danger mx-1" title="Delete">
+                                                            <i class="fa fa-lg fa-fw fa-trash"></i>
+                                                        </button>';
+                                        $btnDetails = '<button class="btn btn-xs btn-default text-teal mx-1" title="Details">
+                                                            <i class="fa fsa-lg fa-fw fa-eye"></i>
+                                                        </button>';
+                                        
+                                        $config = [
+                                            'order' => [[3, 'asc']],
+                                            'lengthMenu' => [5,10,15,20],
+                                        ];
+                                    @endphp
+
+                                    <x-adminlte-datatable id="registration_table" :heads="$heads" :config="$config">
+                                        @foreach ($event->registration as $reg)
+                                            <tr>
+                                                <td>{{ $reg->student->user->name }}</td>
+                                                <td>{{ $reg->student->matric_id}} </td>
+                                                <td>{{ $reg->student->current_semester }}</td>
+                                                <td>{{ $reg->event_mode }}</td>
+                                                <td>
+                                                    <nobr>
+                                                        <a class="btn btn-xs btn-default text-primary mx-1" title="Details"
+                                                            href="#"><i
+                                                                class="fa fa-lg fa-fw fa-eye"></i></a>
+                                                    </nobr>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </x-adminlte-datatable>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 mt-5 mb-3 text-right">
+                        <div class="col-md-12 mt-3 mb-3 text-right">
                             <a href="#" class="btn btn-sm btn-primary">Edit event</a>
                             <button type="button" class="btn btn-sm btn-warning" data-toggle="modal"
                                 data-target="#modal-student">Add students to event</button>
@@ -162,7 +203,8 @@
                         </div>
                         <div class="form-group">
                             <label>Abstract</label>
-                            <textarea class="form-control @error('abstract') is-invalid @enderror" rows="5" id="abstract" name="abstract"></textarea>
+                            <textarea class="form-control @error('abstract') is-invalid @enderror" rows="5" id="abstract"
+                                name="abstract"></textarea>
                             <small>Not more than 500 words</small>
                             <div id="the-count">
                                 <span id="current">0</span>
@@ -249,15 +291,15 @@
             $('#modal-student').modal('show');
         @endif
 
-        
-        counter = function(){
+
+        counter = function() {
             var value = $('#abstract').val();
             var regex = /\s+/gi;
             var wordCount = value.trim().replace(regex, ' ').split(' ').length;
 
             current = $('#current'),
-            maximum = $('#maximum'),
-            theCount = $('#the-count');
+                maximum = $('#maximum'),
+                theCount = $('#the-count');
 
             current.text(wordCount);
 
@@ -275,8 +317,5 @@
             $('#abstract').change(counter);
             $('#abstract').keypress(counter);
         });
-
-
-        
     </script>
 @stop
