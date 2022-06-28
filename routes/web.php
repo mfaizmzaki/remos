@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PGOfficeController;
@@ -59,11 +60,8 @@ Route::resource('registrations', RegistrationController::class);
 Route::get('/users/create-user', [UserController::class, 'index'])->name('create_user');
 Route::post('/users/create-user', [UserController::class, 'create']);
 
-Route::post('/interest/new-interest', [Interest::class, 'create'])->name('create_interest');
-Route::get('/interest/{interest_id}', [Interest::class, 'show'])->name('show_interest');
-Route::post('/interest/{interest_id}', [Interest::class], 'update')->name('update_interest');
-Route::delete('/interest/{interest_id}', [Interest::class], 'destroy')->name('destroy_interest');
-
+Route::post('/report/download', [FileController::class, 'download'])->name('report.download');
+Route::post('/report/delete', [FileController::class, 'delete'])->name('report.delete');
 
 Route::get('redirects', 'App\Http\Controllers\HomeController@index')->name('redirects');
 

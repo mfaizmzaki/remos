@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Registration;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class RegistrationController extends Controller
@@ -70,7 +71,7 @@ class RegistrationController extends Controller
                     'abstract' => $request->abstract,
                     'sv_1_id' => $request->supervisor[0],
                     'sv_2_id' => $request->supervisor[1] ?? null,
-                    'report_upload_path' => $request->file('report')->store('report')
+                    'report_upload_path' => $request->file('report')->storeAs('report', $request->event_id.Carbon::now()->format('dmY').'.pdf')
                 ]);
     
                return back()->with('registration_message', 'Student successfully added to event!');

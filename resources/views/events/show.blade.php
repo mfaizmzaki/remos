@@ -40,7 +40,8 @@
                             <div class="info-box bg-light">
                                 <div class="info-box-content">
                                     <span class="info-box-text text-center text-muted">Students Registered</span>
-                                    <span class="info-box-number text-center text-muted mb-0">{{ count($event->registration) }}</span>
+                                    <span
+                                        class="info-box-number text-center text-muted mb-0">{{ count($event->registration) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -48,75 +49,88 @@
                             <div class="info-box bg-light">
                                 <div class="info-box-content">
                                     <span class="info-box-text text-center text-muted">Reports Submitted</span>
-                                    <span class="info-box-number text-center text-muted mb-0">{{ count($event->registration->where('report_upload_path', '!=', null)) }}</span>
+                                    <span
+                                        class="info-box-number text-center text-muted mb-0">{{ count($event->registration->where('report_upload_path', '!=', null)) }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Department</label>
                                 <input type="text" class="form-control" id="department"
                                     value="{{ $event->department->department_name }}" />
                             </div>
-                            <div class="form-group">
-                                <label>Location</label>
-                                <input type="text" class="form-control" id="location"
-                                    value="{{ $event->location->location_name }}" />
-                            </div>
-                            <div class="form-group">
-                                <label>Date and Time</label>
-                                <input type="text" class="form-control" id="dateTime"
-                                    value="{{ $event->date->format('d/m/Y') }} {{ $event->time }}" />
-                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Chair</label>
                                 <input type="text" class="form-control" id="chair"
                                     value="{{ $event->user->name }}" />
                             </div>
                         </div>
-                        <div class="col-md-8">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date and Time</label>
+                                <input type="text" class="form-control" id="dateTime"
+                                    value="{{ $event->date->format('d/m/Y') }} {{ $event->time }}" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" class="form-control" id="location"
+                                    value="{{ $event->location->location_name }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <strong>Registered Students</strong>
                             <div class="card">
                                 <!-- /.card-header -->
                                 <div class="card-body">
 
                                     @php
-                                        $heads = [['label' => 'Student Name', 'width' => 30],
-                                                  ['label' => 'Matric ID', 'width' => 15],   
-                                                  ['label' => 'Current Semester', 'width' => 10], 
-                                                  ['label' => 'Event Mode', 'width' => 15], 
-                                                  ['label' => 'Actions', 'no-export' => true, 'width' => 20]];
+                                        $heads = [['label' => 'Matric ID', 'width' => 15], ['label' => 'Student Name', 'width' => 25], ['label' => 'Research Title', 'width' => 20], ['label' => 'Current Semester', 'width' => 10], ['label' => 'Event Mode', 'width' => 15], ['label' => 'Actions', 'no-export' => true, 'width' => 20]];
                                         
                                         $btnUpdate = '<button class="btn btn-xs btn-default text-primary mx-1" title="Update" data-toggle="modal" data-target="#update-interest">
-                                                            <i class="fa fa-lg fa-fw fa-pen"></i>
-                                                        </button>';
+                                                                <i class="fa fa-lg fa-fw fa-pen"></i>
+                                                            </button>';
                                         $btnDelete = '<button class="btn btn-xs btn-default text-danger mx-1" title="Delete">
-                                                            <i class="fa fa-lg fa-fw fa-trash"></i>
-                                                        </button>';
+                                                                <i class="fa fa-lg fa-fw fa-trash"></i>
+                                                            </button>';
                                         $btnDetails = '<button class="btn btn-xs btn-default text-teal mx-1" title="Details">
-                                                            <i class="fa fsa-lg fa-fw fa-eye"></i>
-                                                        </button>';
+                                                                <i class="fa fsa-lg fa-fw fa-eye"></i>
+                                                            </button>';
                                         
                                         $config = [
                                             'order' => [[3, 'asc']],
-                                            'lengthMenu' => [5,10,15,20],
+                                            'lengthMenu' => [5, 10, 15, 20],
                                         ];
                                     @endphp
 
                                     <x-adminlte-datatable id="registration_table" :heads="$heads" :config="$config">
                                         @foreach ($event->registration as $reg)
                                             <tr>
+                                                <td>{{ $reg->student->matric_id }} </td>
                                                 <td>{{ $reg->student->user->name }}</td>
-                                                <td>{{ $reg->student->matric_id}} </td>
+                                                <td>{{ $reg->title }} </td>
                                                 <td>{{ $reg->student->current_semester }}</td>
                                                 <td>{{ $reg->event_mode }}</td>
                                                 <td>
                                                     <nobr>
                                                         <a class="btn btn-xs btn-default text-primary mx-1" title="Details"
-                                                            href="#"><i
-                                                                class="fa fa-lg fa-fw fa-eye"></i></a>
+                                                            href="#"><i class="fa fa-lg fa-fw fa-eye"></i></a>
+                                                            <form action="{{ route('report.download') }}" method="post" style="display: inline">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-xs btn-default text-primary mx-1" title="Download Report" name="report" value="{{ $reg->report_upload_path}}">
+                                                                    <i class="fa fa-lg fa-fw fa-download" style="color: green"></i></button>
+                                                            </form>
+                                                            
                                                     </nobr>
                                                 </td>
                                             </tr>
@@ -159,9 +173,9 @@
                             <select class="form-control select2bs4 @error('student') is-invalid @enderror" name="student">
                                 <option value="" disabled selected hidden></option>
                                 @foreach ($students as $student)
-                                    <option value={{ $student->id }}
-                                        @if (old('student') == $student->id) {{ 'selected' }} @endif>
-                                        {{ $student->name }}</option>
+                                    <option value={{ $student->user_id }}
+                                        @if (old('student') == $student->user_id) {{ 'selected' }} @endif>
+                                        {{ $student->user->name }}</option>
                                 @endforeach
                             </select>
                             <small>Only students in the respective department are listed</small>
