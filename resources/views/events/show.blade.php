@@ -10,6 +10,13 @@
         </div>
         {{ Session::forget('registration_message') }}
     @endif
+    @if(session('file_error'))
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ session('file_error') }}
+        </div>
+        {{ Session::forget('file_error') }}
+    @endif
     <style>
         #the-count {
             float: right;
