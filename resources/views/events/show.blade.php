@@ -135,7 +135,7 @@
                                         <td>{{ $reg->event_mode }}</td>
                                         <td>
                                             <nobr>
-                                                <a class="btn btn-xs btn-default text-primary mx-1" title="Details" href="#"><i class="fa fa-lg fa-fw fa-eye"></i></a>
+                                                <a class="btn btn-xs btn-default text-primary mx-1" title="Details" href="{{ route('registrations.show', $reg->id) }}"><i class="fa fa-lg fa-fw fa-eye"></i></a>
                                                 <form action="{{ route('report.download') }}" method="post" style="display: inline">
                                                     @csrf
                                                     <button type="submit" class="btn btn-xs btn-default text-primary mx-1" title="Download Report" name="report" value="{{ $reg->report_upload_path}}">

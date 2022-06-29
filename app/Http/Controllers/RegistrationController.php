@@ -97,12 +97,16 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($department_id)
+    public function show($id)
     {
-        $students = User::where('role_id', 1)->where('department_id', $department_id)->get();
-        $lecturers = User::where('role_id', 3)->get();
-
-        return view('registrations.show', ['students'=>$students, 'lecturers'=>$lecturers]);
+        $registration = Registration::find($id);
+        $sv_id = array($registration->sv_1_id, $registration->sv_2_id ?? '');
+        $lecturers = User::where('role_id', 3)
+                        ->whereNotIn('id', $sv_id)
+                        ->get();
+                        
+        return view('registrations.show', ['registration' => $registration,
+                                           'lecturers'=>$lecturers]);
     }
 
     /**
