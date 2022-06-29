@@ -4,6 +4,11 @@
 
 @section('content_header')
     <br>
+    <style>
+        span.required{
+            color: red;
+        }
+    </style>
 @stop
 
 @section('content')
@@ -26,7 +31,7 @@
                   @csrf
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="exampleSelectRounded0">Student Name</label>
+                            <label for="exampleSelectRounded0">Student Name <span class="required">*</span></label>
                             <select class="custom-select rounded-0" name="department" required>
                                 <option value="" disabled selected hidden>Choose Student</option>
                                 @foreach ($students as $student)
@@ -36,7 +41,7 @@
                             </select>
                         </div>
                         {{-- <div class="form-group">
-                            <label for="eventMode">Event Mode</label>
+                            <label for="eventMode">Event Mode <span class="required">*</span></label>
                             <select class="custom-select rounded-0" name="eventMode" required>
                                 <option value="" disabled selected hidden>Choose Event Mode</option>
                                 <option value="Proposal Defence">Proposal Defence</option>
@@ -45,7 +50,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="location">Location</label>
+                            <label for="location">Location <span class="required">*</span></label>
                             <select class="custom-select rounded-0" name="location" required>
                                 <option value="" disabled selected hidden>Choose Location</option>
                                 @foreach ($locations as $location)
@@ -54,14 +59,14 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Date</label>
+                            <label>Date <span class="required">*</span></label>
                             <div class="input-group date">
                                 <input type="date" class="form-control datetimepicker-input" name="date" required/>
                             </div>
                         </div>
                         <div class="bootstrap-timepicker">
                             <div class="form-group">
-                                <label>Time</label>
+                                <label>Time <span class="required">*</span></label>
                                 <div class="input-group date">
                                     <input type="time" class="form-control datetimepicker-input" name="time" required/>
                                 </div>
@@ -70,7 +75,7 @@
                             <!-- /.form group -->
                         </div>
                         <div class="form-group">
-                            <label>Chair</label>
+                            <label>Chair <span class="required">*</span></label>
                             <select class="form-control select2bs4" name="chair" style="width: 100%" required>
                               <option value="" disabled selected hidden>Event Chair</option>
                               @foreach ($lecturers as $lecturer)

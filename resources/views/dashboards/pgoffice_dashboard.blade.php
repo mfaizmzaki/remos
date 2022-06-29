@@ -70,7 +70,7 @@
             <!-- Widget: user widget style 2 -->
             <div class="card card-widget widget-user-2">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header bg-info px-2">
+                <div class="widget-user-header bg-info px-1">
                     <!-- /.widget-user-image -->
                     <center>
                         <h5>{{ $department->department_name }}</h5>
@@ -82,8 +82,8 @@
                 <div class="card-footer p-0">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Upcoming REMOS 
+                            <a href="#" class="nav-link" style="pointer-events: none">
+                                Next REMOS 
                                 @if (count($upcomingREMOS) > 0)
                                 <span class="float-right badge bg-primary">{{ $department->event->where('date', '>', Carbon\Carbon::now())->sortBy('date')->first()->date->format('d/m/Y') }} 
                                     - <small>{{ $department->event->where('date', '>', Carbon\Carbon::now())->sortBy('date')->first()->date->diffForHumans() }}</small></span>
@@ -93,7 +93,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link" style="pointer-events: none">
                                 Registered Candidates
                                 @if (count($upcomingREMOS) > 0)
                                 <span class="float-right badge bg-info">{{ count($upcomingREMOS->sortBy('date')->first()->registration) }}</span>
@@ -103,12 +103,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link" style="pointer-events: none">
                                 Unassigned REMOS <span class="float-right badge bg-danger">12</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link" style="pointer-events: none ">
                                 Pending Results <span class="float-right badge bg-danger">842</span>
                             </a>
                         </li>

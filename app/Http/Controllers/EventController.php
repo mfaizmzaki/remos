@@ -72,8 +72,15 @@ class EventController extends Controller
         $event = Event::find($id);
         $students = Student::whereRelation('user', 'department_id', $event->department_id)->get();
         $lecturers = User::where('role_id', 3)->get();
+        $departments = Department::where('id', '!=', $event->department_id)->get();
+        $locations = Location::where('id', '!=', $event->location_id)->get();
 
-        return view('events.show', ['event'=>$event, 'students'=>$students, 'lecturers'=>$lecturers]);
+
+        return view('events.show', ['event'=>$event, 
+                                    'students'=>$students, 
+                                    'lecturers'=>$lecturers,
+                                    'departments'=>$departments,
+                                    'locations'=>$locations]);
     }
 
     /**
@@ -82,9 +89,9 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        
     }
 
     /**
@@ -96,7 +103,14 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Event::where('id', $id)->update([
+            'location_id' => $request->location,
+            'date' => $request->date,
+            'time' => $request->time,
+            'chair_id' => $request->chair
+        ]);
+
+        return back()->with('update_message', 'Event successfully updated');
     }
 
     /**

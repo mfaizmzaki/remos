@@ -52,7 +52,7 @@ class RegistrationController extends Controller
             'student' => ['required'],
             'event_id' => ['required'],
             'eventMode' => ['required', 'string'],
-            'title' => ['nullable', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255'],
             'abstract' => ['nullable','string', 'maxwords:500'],
             'report' => ['nullable', 'mimes:pdf,docx', 'max:5000'],
             'supervisor' => ['required', 'array', 'max:2']
@@ -71,7 +71,7 @@ class RegistrationController extends Controller
                     'abstract' => $request->abstract,
                     'sv_1_id' => $request->supervisor[0],
                     'sv_2_id' => $request->supervisor[1] ?? null,
-                    'report_upload_path' => $request->file('report')->storeAs('report', $request->event_id.Carbon::now()->format('dmY').'.pdf')
+                    'report_upload_path' => $request->file('report')->storeAs('remos_report', $request->student.Carbon::now()->format('dmY').'.pdf')
                 ]);
     
                return back()->with('registration_message', 'Student successfully added to event!');

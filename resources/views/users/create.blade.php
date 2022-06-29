@@ -4,6 +4,11 @@
 
 @section('content_header')
     <br>
+    <style>
+        span.required { 
+            color: red; 
+        }
+    </style>
 @stop
 
 @section('content')
@@ -26,7 +31,7 @@
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="name">Full Name</label>
+                            <label for="name">Full Name <span class="required">*</span></label>
                             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" 
                                 placeholder="Enter full name">
 
@@ -37,7 +42,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="email">Email address</label>
+                            <label for="email">Email address <span class="required">*</span></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" name="email" placeholder="Enter email">
 
                             @error('email')
@@ -47,7 +52,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="password">Password</label>
+                            <label for="password">Password <span class="required">*</span></label>
                             <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter default password (IC/Passport Number)">
                         
                             @error('password')
@@ -57,12 +62,12 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="password_confirmation">Password Confirmation</label>
+                            <label for="password_confirmation">Password Confirmation <span class="required">*</span></label>
                             <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation"
                                 placeholder="Enter default password (IC/Passport Number)">
                         </div>
                         <div class="form-group">
-                            <label for="name">Staff/Student ID</label>
+                            <label for="name">Staff/Student ID <span class="required">*</span></label>
                             <input type="text" class="form-control @error('matric') is-invalid @enderror" name="matric" value="{{ old('matric') }}" placeholder="Enter matric number (E.g. 17001234)">
 
                             @error('matric')
@@ -72,7 +77,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="role">Department</label>
+                            <label for="role">Department <span class="required">*</span></label>
                             <select class="custom-select rounded-0 @error('department') is-invalid @enderror" name="department">
                                 <option value="" disabled selected hidden>Choose Department</option>
                                 <@foreach ($departments as $department)
@@ -87,7 +92,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="role">Role</label>
+                            <label for="role">Role <span class="required">*</span></label>
                             <select class="custom-select rounded-0 @error('role') is-invalid @enderror" name="role" id="role">
                                 <option value="" disabled selected hidden>Choose role</option>
                                 <@foreach ($roles as $role)
@@ -102,7 +107,7 @@
                             @enderror
                         </div>
                         <div class="form-group" id="program" style="display: none">
-                            <label for="program">Program</label>
+                            <label for="program">Program <span class="required">*</span></label>
                             <select class="custom-select rounded-0 @error('program') is-invalid @enderror" name="program">
                                 <option value="" disabled selected hidden>Choose program</option>
                                 <option value="PhD" @if (old('program') == "PhD") {{ 'selected' }} @endif>PhD</option>
@@ -117,7 +122,7 @@
                             @enderror
                         </div>
                         <div class="form-group" id="semester" style="display: none">
-                            <label for="semester">Current Semester</label>
+                            <label for="semester">Current Semester <span class="required">*</span></label>
                             <input type="text" class="form-control @error('semester') is-invalid @enderror" name="semester" value="{{ old('semester') }}" placeholder="Enter current semester: Numbers only">
                         
                             @error('semester')
