@@ -104,7 +104,12 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link" style="pointer-events: none">
-                                Unassigned REMOS <span class="float-right badge bg-danger">12</span>
+                                Submitted reports 
+                                @if (count($upcomingREMOS) > 0)
+                                <span class="float-right badge bg-info">{{ count($department->event->where('date', '>', Carbon\Carbon::now())->sortBy('date')->first()->registration->where('report_upload_path', '!=', null)) }}</span>
+                                @else
+                                <span class="float-right badge bg-info">0</span>
+                                @endif
                             </a>
                         </li>
                         <li class="nav-item">
