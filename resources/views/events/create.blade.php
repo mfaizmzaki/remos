@@ -14,70 +14,66 @@
         </div>
     @endif
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Create Event</h3>
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form action="{{ route('events.store') }}" method="POST">
-                  @csrf
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="exampleSelectRounded0">Department</label>
-                            <select class="custom-select rounded-0" name="department" required>
-                                <option value="" disabled selected hidden>Choose Department</option>
-                                @foreach ($departments as $department)
-                                    <option value={{ $department->id }}>{{ $department->department_name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="location">Location</label>
-                            <select class="custom-select rounded-0" name="location" required>
-                                <option value="" disabled selected hidden>Choose Location</option>
-                                @foreach ($locations as $location)
-                                    <option value={{ $location->id }}>{{ $location->location_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Date</label>
-                            <div class="input-group date">
-                                <input type="date" class="form-control datetimepicker-input" name="date" required/>
-                            </div>
-                        </div>
-                        <div class="bootstrap-timepicker">
-                            <div class="form-group">
-                                <label>Time</label>
-                                <div class="input-group date">
-                                    <input type="time" class="form-control datetimepicker-input" name="time" required/>
-                                </div>
-                                <!-- /.input group -->
-                            </div>
-                            <!-- /.form group -->
-                        </div>
-                        <div class="form-group">
-                            <label>Chair</label>
-                            <select class="form-control select2bs4" name="chair" style="width: 100%" required>
-                              <option value="" disabled selected hidden>Event Chair</option>
-                              @foreach ($lecturers as $lecturer)
-                              <option value="{{ $lecturer->id }}">{{ $lecturer->name }}</option>
-                              @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Create Event</h3>
         </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form action="{{ route('events.store') }}" method="POST">
+            @csrf
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="exampleSelectRounded0">Department</label>
+                    <select class="custom-select rounded-0" name="department" required>
+                        <option value="" disabled selected hidden>Choose Department</option>
+                        @foreach ($departments as $department)
+                            <option value={{ $department->id }}>{{ $department->department_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <select class="custom-select rounded-0" name="location" required>
+                        <option value="" disabled selected hidden>Choose Location</option>
+                        @foreach ($locations as $location)
+                            <option value={{ $location->id }}>{{ $location->location_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <div class="input-group date">
+                        <input type="date" class="form-control datetimepicker-input" name="date" required />
+                    </div>
+                </div>
+                <div class="bootstrap-timepicker">
+                    <div class="form-group">
+                        <label>Time</label>
+                        <div class="input-group date">
+                            <input type="time" class="form-control datetimepicker-input" name="time" required />
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <!-- /.form group -->
+                </div>
+                <div class="form-group">
+                    <label>Chair</label>
+                    <select class="form-control select2bs4" name="chair" style="width: 100%" required>
+                        <option value="" disabled selected hidden>Event Chair</option>
+                        @foreach ($lecturers as $lecturer)
+                            <option value="{{ $lecturer->id }}">{{ $lecturer->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary float-right">Submit</button>
+            </div>
+        </form>
     </div>
 
 @stop

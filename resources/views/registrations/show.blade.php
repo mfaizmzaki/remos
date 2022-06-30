@@ -4,12 +4,12 @@
 
 @section('content_header')
     <br>
-    @if(session('update_message'))
-    <div class="alert alert-success alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        {{ session('update_message') }}
-    </div>
-    {{ Session::forget('update_message') }}
+    @if (session('update_message'))
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ session('update_message') }}
+        </div>
+        {{ Session::forget('update_message') }}
     @endif
     <style>
         span.required {
@@ -53,9 +53,12 @@
                 <textarea class="form-control" rows="5" disabled>{{ $registration->abstract }}</textarea>
             </div>
             <div class="form-group">
+                <label>Report</label>
+                <input type="text" class="form-control" value="{{ basename($registration->report_upload_path) }}" disabled />
+            </div>
+            <div class="form-group">
                 <label>Supervisor(s) <span class="required">*</span></label>
-                <select class="select2bs4" multiple="multiple" name="supervisor[]"
-                    style="width: 100%" disabled>
+                <select class="select2bs4" multiple="multiple" name="supervisor[]" style="width: 100%" disabled>
                     @if ($registration->sv_1_id != null)
                         <option value="{{ $registration->sv_1_id }}" selected>
                             {{ $registration->supervisor_1->name }}</option>
@@ -67,8 +70,9 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-12 mt-1 mb-3 mr-10 text-right">
-            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-registration">Edit registration</button>
+        <div class="card-footer">
+            <button type="button" class="btn btn-warning float-right" data-toggle="modal"
+                        data-target="#modal-registration">Edit registration</button>
         </div>
     </div>
     </div>
@@ -86,7 +90,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('registrations.update', $registration->id) }}" method="POST">
+                    <form action="{{ route('registrations.update', $registration->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
@@ -96,7 +100,8 @@
                         </div>
                         <div class="form-group">
                             <label>Matric ID <span class="required">*</span></label>
-                            <input type="text" class="form-control" name="matric_id" value="{{ $registration->student->matric_id }}" />
+                            <input type="text" class="form-control" name="matric_id"
+                                value="{{ $registration->student->matric_id }}" />
                         </div>
                         <div class="form-group">
                             <label for="event_mode">Event Mode <span class="required">*</span></label>
@@ -116,12 +121,12 @@
                         </div>
                         <div class="form-group">
                             <label>Research Title <span class="required">*</span></label>
-                            <input type="text" class="form-control" name="title" value="{{ $registration->title }}" />
+                            <input type="text" class="form-control" name="title"
+                                value="{{ $registration->title }}" />
                         </div>
                         <div class="form-group">
                             <label>Abstract</label>
-                            <textarea class="form-control @error('abstract') is-invalid @enderror" rows="5" id="abstract" 
-                                name="abstract">{{ $registration->abstract }}</textarea>
+                            <textarea class="form-control @error('abstract') is-invalid @enderror" rows="5" id="abstract" name="abstract">{{ $registration->abstract }}</textarea>
                             <small>Not more than 500 words</small>
                             <div id="the-count">
                                 <span id="current">0</span>
@@ -133,6 +138,21 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Report Upload</label>
+                            <div class="custom-file">
+                                <label class="custom-file-label" for="report">Choose file</label>
+                                <input type="file" class="@error('report') is-invalid @enderror custom-file-input "
+                                    name="report" id="reportFileName" onchange="setfilename(this.value);">
+                                <small>File format allowed: PDF or DOCX only (&lt5MB)</small>
+                                
+                                @error('report')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Supervisor(s) <span class="required">*</span></label>
@@ -158,11 +178,11 @@
                                 </span>
                             @enderror
                         </div>
-                    
-                    <div class="modal-footer text-right">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
+
+                        <div class="modal-footer text-right">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -192,6 +212,13 @@
                 theme: 'bootstrap4'
             })
         })
+
+        $('#reportFileName').change(function() {
+            var i = $(this).prev('label').clone();
+            var file = $('#reportFileName')[0].files[0].name;
+            $(this).prev('label').text(file);
+        });
+
 
         @if (count($errors) > 0)
             $('#modal-registration').modal('show');

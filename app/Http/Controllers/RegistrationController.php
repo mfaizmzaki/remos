@@ -72,7 +72,7 @@ class RegistrationController extends Controller
                     'abstract' => $request->abstract,
                     'sv_1_id' => $request->supervisor[0],
                     'sv_2_id' => $request->supervisor[1] ?? null,
-                    'report_upload_path' => $request->file('report')->storeAs('remos_report', $request->student.Carbon::now()->format('dmY').'.pdf')
+                    'report_upload_path' => $request->file('report')->storeAs('report', $request->student.Carbon::now()->format('dmY').'.pdf')
                 ]);
     
                return back()->with('registration_message', 'Student successfully added to event!');
@@ -130,7 +130,6 @@ class RegistrationController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $registration = Registration::find($id);
 
         Student::where('user_id', $registration->student_id)->update([
@@ -141,7 +140,7 @@ class RegistrationController extends Controller
             'event_mode' => $request->event_mode,
             'title' => $request->title,
             'abstract' => $request->abstract,
-            'report_upload_path' => $request->report,
+            'report_upload_path' => $request->file('report')->storeAs('report', $request->student.Carbon::now()->format('dmY').'.pdf'),
             'sv_1_id' => $request->supervisor[0],
             'sv_2_id' => $request->supervisor[1] ?? null,
         ]);

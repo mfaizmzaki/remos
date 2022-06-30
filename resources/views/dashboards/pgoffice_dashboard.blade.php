@@ -10,6 +10,13 @@
         </div>
         {{ Session::forget('store_message') }}
     @endif
+    @if (session('delete_message'))
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ session('delete_message') }}
+        </div>
+        {{ Session::forget('delete_message') }}
+    @endif
     
     <h1>Postgraduate Office Dashboard</h1>
 @stop
@@ -34,8 +41,6 @@
                     <a class="btn btn-block btn-outline-primary btn-sm" href="{{ route('create_user') }}">Create new REMOS user</a>
                     <button type="button" class="btn btn-block btn-outline-primary btn-sm">Add new lecturer or panel to
                         REMOS event</button>
-                    <button type="button" class="btn btn-block btn-outline-primary btn-sm">Add new student to REMOS
-                        event</button>
                 </div>
             </div>
         </div>
@@ -77,16 +82,16 @@
                     </center>
                 </div>
                 @php
-                    $upcomingREMOS = $department->event->where('date', '>', Carbon\Carbon::now());
+                    $upcomingREMOS = $department->event->where('date', '>=', Carbon\Carbon::now()->startOfDay());
                 @endphp
                 <div class="card-footer p-0">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a href="#" class="nav-link" style="pointer-events: none">
-                                Next REMOS 
+                                Nearest REMOS 
                                 @if (count($upcomingREMOS) > 0)
-                                <span class="float-right badge bg-primary">{{ $department->event->where('date', '>', Carbon\Carbon::now())->sortBy('date')->first()->date->format('d/m/Y') }} 
-                                    - <small>{{ $department->event->where('date', '>', Carbon\Carbon::now())->sortBy('date')->first()->date->diffForHumans() }}</small></span>
+                                <span class="float-right badge bg-primary">{{ $department->event->where('date', '>=', Carbon\Carbon::now()->startOfDay())->sortBy('date')->first()->date->format('d/m/Y') }} 
+                                    - <small>{{ $department->event->where('date', '>=', Carbon\Carbon::now()->startOfDay())->sortBy('date')->first()->date->diffForHumans() }}</small></span>
                                 @else
                                 <span class="float-right badge bg-primary">No upcoming event</span>
                                 @endif
@@ -106,7 +111,7 @@
                             <a href="#" class="nav-link" style="pointer-events: none">
                                 Submitted reports 
                                 @if (count($upcomingREMOS) > 0)
-                                <span class="float-right badge bg-info">{{ count($department->event->where('date', '>', Carbon\Carbon::now())->sortBy('date')->first()->registration->where('report_upload_path', '!=', null)) }}</span>
+                                <span class="float-right badge bg-info">{{ count($department->event->where('date', '>=', Carbon\Carbon::now()->startOfDay())->sortBy('date')->first()->registration->where('report_upload_path', '!=', null)) }}</span>
                                 @else
                                 <span class="float-right badge bg-info">0</span>
                                 @endif
@@ -167,7 +172,12 @@
                                 <td>{{ $event->user->name }}</td>
                                 <td>
                                     <nobr>
-                                        <a class="btn btn-xs btn-default text-primary mx-1" title="Details" href="{{ route('events.show', $event->id) }}"><i class="fa fa-lg fa-fw fa-eye"></i></a>
+                                        <a class="btn btn-xs btn-primary mx-1" title="More Details" href="{{ route('events.show', $event->id) }}">Details</a>
+                                        <form action="{{ route('events.destroy', $event->id) }}" method="POST" style="display: inline">
+                                            @csrf
+                                            @method('DELETE')
+                                        <button type="submit" class="btn btn-xs btn-danger mx-1" title="Delete Event">Delete</button>
+                                        </form>
                                     </nobr>
                                 </td>
                             </tr>
