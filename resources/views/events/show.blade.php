@@ -332,8 +332,8 @@
                     <div class="modal-footer text-right">
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
+                </form>
             </div>
-            </form>
         </div>
     </div>
 </div>

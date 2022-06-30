@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\Student;
 use App\Models\Registration;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -129,7 +130,23 @@ class RegistrationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $registration = Registration::find($id);
+
+        Student::where('user_id', $registration->student_id)->update([
+            'matric_id' => $request->matric_id
+        ]);
+
+        Registration::where('id', $id)->update([
+            'event_mode' => $request->event_mode,
+            'title' => $request->title,
+            'abstract' => $request->abstract,
+            'report_upload_path' => $request->report,
+            'sv_1_id' => $request->supervisor[0],
+            'sv_2_id' => $request->supervisor[1] ?? null,
+        ]);
+
+        return back()->with('update_message', 'Registration successfully updated');
     }
 
     /**

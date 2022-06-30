@@ -45,7 +45,7 @@
                     <span class="info-box-icon bg-success"><i class="far fa-user"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text mt-1">Total registered students in the system</span>
-                        <span class="info-box-number mb-3">1,410</span>
+                        <span class="info-box-number mb-3">{{ $students_count }}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -56,7 +56,7 @@
                     <span class="info-box-icon bg-success"><i class="far fa-user"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Total registered staffs in the system</span>
-                        <span class="info-box-number mb-2">1,410</span>
+                        <span class="info-box-number mb-2">{{ $staffs_count }}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>

@@ -3,101 +3,173 @@
 @section('title', 'Create Event')
 
 @section('content_header')
-<br>
-<style>
-    span.required {
-        color: red;
-    }
-</style>
+    <br>
+    @if(session('update_message'))
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ session('update_message') }}
+    </div>
+    {{ Session::forget('update_message') }}
+    @endif
+    <style>
+        span.required {
+            color: red;
+        }
+    </style>
 @stop
 
 @section('content')
-@if (session('user_is_switched'))
-<div class="alert alert-warning">
-    You are currently logged in as a different user. <a href="{{ route('user.restore') }}">Click here</a> to
-    restore your login.
-</div>
-@endif
+    @if (session('user_is_switched'))
+        <div class="alert alert-warning">
+            You are currently logged in as a different user. <a href="{{ route('user.restore') }}">Click here</a> to
+            restore your login.
+        </div>
+    @endif
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="card card-primary">
-            <div class="card-header">
-                <h3 class="card-title">Event Registration</h3>
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Event Registration</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="form-group">
+                <label>Student Name</label>
+                <input type="text" class="form-control" value="{{ $registration->student->user->name }}" disabled />
             </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <div class="form-group">
-                    <label>Student Name</label>
-                    <input type="text" class="form-control" value="{{ $registration->student->user->name }}" disabled />
+            <div class="form-group">
+                <label>Matric ID</label>
+                <input type="text" class="form-control" value="{{ $registration->student->matric_id }}" disabled />
+            </div>
+            <div class="form-group">
+                <label for="event_mode">Event Mode <span class="required">*</span></label>
+                <input type="text" class="form-control" value="{{ $registration->event_mode }}" disabled />
+            </div>
+            <div class="form-group">
+                <label>Research Title</label>
+                <input type="text" class="form-control" value="{{ $registration->title }}" disabled />
+            </div>
+            <div class="form-group">
+                <label>Abstract</label>
+                <textarea class="form-control" rows="5" disabled>{{ $registration->abstract }}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Supervisor(s) <span class="required">*</span></label>
+                <select class="select2bs4" multiple="multiple" name="supervisor[]"
+                    style="width: 100%" disabled>
+                    @if ($registration->sv_1_id != null)
+                        <option value="{{ $registration->sv_1_id }}" selected>
+                            {{ $registration->supervisor_1->name }}</option>
+                    @endif
+                    @if ($registration->sv_2_id != null)
+                        <option value="{{ $registration->sv_2_id }}" selected>
+                            {{ $registration->supervisor_2->name }}</option>
+                    @endif
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12 mt-1 mb-3 mr-10 text-right">
+            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-registration">Edit registration</button>
+        </div>
+    </div>
+    </div>
+
+
+
+    {{-- Registration Modal section --}}
+    <div class="modal fade" id="modal-registration">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Event Registration</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label>Matric ID</label>
-                    <input type="text" class="form-control" value="{{ $registration->student->matric_id }}" disabled />
-                </div>
-                <div class="form-group">
-                    <label for="eventMode">Event Mode <span class="required">*</span></label>
-                    @php
-                    $event_modes = array('Proposal Defence', 'Candidature Defence', 'Thesis Seminar');
-                    @endphp
-                    <select class="custom-select rounded-0" name="eventMode" required>
-                        <option value="{{ $registration->event_mode }}" selected>{{ $registration->event_mode }}</option>
-                        @foreach ($event_modes as $event_mode)
-                        @if ($registration->event_mode !== $event_mode)
-                        <option value={{ $event_mode }}>{{ $event_mode }}</option>
-                        @endif
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Research Title</label>
-                    <input type="text" class="form-control" name="title" value="{{ $registration->title }}" disabled />
-                </div>
-                <div class="form-group">
-                    <label>Abstract</label>
-                    <textarea class="form-control @error('abstract') is-invalid @enderror" rows="5" id="abstract" name="abstract" value="{{ $registration->abstract }}"></textarea>
-                    <small>Not more than 500 words</small>
-                    <div id="the-count">
-                        <span id="current">0</span>
-                        <span id="maximum">/ 500</span>
+                <div class="modal-body">
+                    <form action="{{ route('registrations.update', $registration->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label>Student Name</label>
+                            <input type="text" class="form-control" value="{{ $registration->student->user->name }}"
+                                disabled />
+                        </div>
+                        <div class="form-group">
+                            <label>Matric ID <span class="required">*</span></label>
+                            <input type="text" class="form-control" name="matric_id" value="{{ $registration->student->matric_id }}" />
+                        </div>
+                        <div class="form-group">
+                            <label for="event_mode">Event Mode <span class="required">*</span></label>
+                            @php
+                                $event_modes = ['Proposal Defence', 'Candidature Defence', 'Thesis Seminar'];
+                            @endphp
+                            <select class="custom-select rounded-0" name="event_mode" required>
+                                <option value="{{ $registration->event_mode }}" selected>
+                                    {{ $registration->event_mode }}
+                                </option>
+                                @foreach ($event_modes as $event_mode)
+                                    @if ($registration->event_mode !== $event_mode)
+                                        <option value={{ $event_mode }}>{{ $event_mode }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Research Title <span class="required">*</span></label>
+                            <input type="text" class="form-control" name="title" value="{{ $registration->title }}" />
+                        </div>
+                        <div class="form-group">
+                            <label>Abstract</label>
+                            <textarea class="form-control @error('abstract') is-invalid @enderror" rows="5" id="abstract" 
+                                name="abstract">{{ $registration->abstract }}</textarea>
+                            <small>Not more than 500 words</small>
+                            <div id="the-count">
+                                <span id="current">0</span>
+                                <span id="maximum">/ 500</span>
+                            </div>
+
+                            @error('abstract')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Supervisor(s) <span class="required">*</span></label>
+                            <select class="select2bs4 @error('supervisor') is-invalid @enderror" multiple="multiple"
+                                name="supervisor[]" style="width: 100%">
+                                @if ($registration->sv_1_id != null)
+                                    <option value="{{ $registration->sv_1_id }}" selected>
+                                        {{ $registration->supervisor_1->name }}</option>
+                                @endif
+                                @if ($registration->sv_2_id != null)
+                                    <option value="{{ $registration->sv_2_id }}" selected>
+                                        {{ $registration->supervisor_2->name }}</option>
+                                @endif
+                                @foreach ($lecturers as $lecturer)
+                                    <option value="{{ $lecturer->id }}">{{ $lecturer->name }}</option>
+                                @endforeach
+                            </select>
+                            <small>Maximum of two supervisors</small>
+
+                            @error('supervisor')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    
+                    <div class="modal-footer text-right">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
-
-                    @error('abstract')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
+                </form>
                 </div>
-                <div class="form-group">
-                    <label>Supervisor(s) <span class="required">*</span></label>
-                    <select class="select2bs4 @error('supervisor') is-invalid @enderror" multiple="multiple" name="supervisor[]" style="width: 100%">
-                        @if ($registration->sv_1_id != null)
-                        <option value="{{ $registration->sv_1_id }}" selected>{{ $registration->supervisor_1->name }}</option>
-                        @endif
-                        @if ($registration->sv_2_id != null)
-                        <option value="{{ $registration->sv_2_id }}" selected>{{ $registration->supervisor_2->name }}</option>
-                        @endif
-                        @foreach ($lecturers as $lecturer)
-                        <option value="{{ $lecturer->id }}">{{ $lecturer->name }}</option>
-                        @endforeach
-                    </select>
-                    <small>Maximum of two supervisors</small>
-
-                    @error('supervisor')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <!-- /.card-body -->
             </div>
         </div>
     </div>
-</div>
+@stop
 
-    @stop
-
-    @section('css')
+@section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
     <link rel="stylesheet" href="{{ asset('vendor/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
@@ -107,9 +179,9 @@
         }
     </style>
 
-    @stop
+@stop
 
-    @section('js')
+@section('js')
     <script src="{{ asset('vendor/select2/js/select2.full.min.js') }}"></script>
     <script>
         $(function() {
@@ -121,8 +193,8 @@
             })
         })
 
-        @if(count($errors) > 0)
-        $('#modal-student').modal('show');
+        @if (count($errors) > 0)
+            $('#modal-registration').modal('show');
         @endif
 
 
@@ -152,4 +224,4 @@
             $('#abstract').keypress(counter);
         });
     </script>
-    @stop
+@stop
