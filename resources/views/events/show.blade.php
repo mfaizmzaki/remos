@@ -129,7 +129,7 @@
                                 ];
                             @endphp
 
-                            <x-adminlte-datatable id="registration_table" :heads="$heads" :config="$config">
+                            <x-adminlte-datatable id="registration_table" :heads="$heads" :config="$config" theme="light" striped hoverable>
                                 @foreach ($event->registration as $reg)
                                     <tr>
                                         <td>{{ $reg->student->matric_id }} </td>
@@ -311,6 +311,45 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label for="panel-1">Panel 1<span class="required">*</span></label>
+                            <select class="form-control select2bs4 @error('panel-1') is-invalid @enderror" name="panel-1">
+                                <option value="" disabled selected hidden></option>
+                                @foreach ($lecturers as $panel)
+                                    <option value={{ $panel->id }}
+                                        @if (old('panel-1') == $panel->id) {{ 'selected' }} @endif>
+                                        {{ $panel->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                
+                            @error('panel-1')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="panel-2">Panel 2<span class="required">*</span></label>
+                            <select class="form-control select2bs4 @error('panel-2') is-invalid @enderror" name="panel-2">
+                                <option value="" disabled selected hidden></option>
+                                @foreach ($lecturers as $panel)
+                                    <option value={{ $panel->id }}
+                                        @if (old('panel-2') == $panel->id) {{ 'selected' }} @endif>
+                                        {{ $panel->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                
+                            @error('panel-2')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
                         <div class="modal-footer text-right">
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>

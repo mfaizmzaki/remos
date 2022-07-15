@@ -56,7 +56,9 @@ class RegistrationController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'abstract' => ['nullable','string', 'maxwords:500'],
             'report' => ['nullable', 'mimes:pdf,docx', 'max:5000'],
-            'supervisor' => ['required', 'array', 'max:2']
+            'supervisor' => ['required', 'array', 'max:2'],
+            'panel_1' => ['required'],
+            'panel_2' => ['required'],
         ]);
 
         if($validator->fails()){
@@ -72,7 +74,9 @@ class RegistrationController extends Controller
                     'abstract' => $request->abstract,
                     'sv_1_id' => $request->supervisor[0],
                     'sv_2_id' => $request->supervisor[1] ?? null,
-                    'report_upload_path' => $request->file('report')->storeAs('report', $request->student.Carbon::now()->format('dmY').'.pdf')
+                    'report_upload_path' => $request->file('report')->storeAs('report', $request->student.Carbon::now()->format('dmY').'.pdf'),
+                    'panel_1_id' => $request->panel_1,
+                    'panel_2_id' => $request->panel_2
                 ]);
     
                return back()->with('registration_message', 'Student successfully added to event!');
@@ -85,6 +89,8 @@ class RegistrationController extends Controller
                     'abstract' => $request->abstract,
                     'sv_1_id' => $request->supervisor[0],
                     'sv_2_id' => $request->supervisor[1] ?? null,
+                    'panel_1_id' => $request->panel_1,
+                    'panel_2_id' => $request->panel_2
                 ]);
 
                 return back()->with('registration_message', 'Student successfully added to event!');
@@ -143,6 +149,8 @@ class RegistrationController extends Controller
             'report_upload_path' => $request->file('report')->storeAs('report', $request->student.Carbon::now()->format('dmY').'.pdf'),
             'sv_1_id' => $request->supervisor[0],
             'sv_2_id' => $request->supervisor[1] ?? null,
+            'panel_1_id' => $request->panel_1,
+            'panel_2_id' => $request->panel_2
         ]);
 
         return back()->with('update_message', 'Registration successfully updated');

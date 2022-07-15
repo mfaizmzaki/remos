@@ -33,6 +33,14 @@ class Registration extends Model
         return $this->belongsTo(User::class, 'sv_2_id');
     }
 
+    public function panel_1(){
+        return $this->belongsTo(User::class, 'panel_1_id');
+    }
+
+    public function panel_2(){
+        return $this->belongsTo(User::class, 'panel_2_id');
+    }
+
     public function event(){
         return $this->belongsTo(Event::class);
     }

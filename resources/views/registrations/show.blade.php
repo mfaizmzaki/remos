@@ -26,6 +26,10 @@
         </div>
     @endif
 
+    <div class="mb-2">
+        <a href="{{ route('events.show', $registration->event_id) }}">Go Back</a>
+    </div>
+
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Event Registration</h3>
@@ -54,7 +58,8 @@
             </div>
             <div class="form-group">
                 <label>Report</label>
-                <input type="text" class="form-control" value="{{ basename($registration->report_upload_path) }}" disabled />
+                <input type="text" class="form-control" value="{{ basename($registration->report_upload_path) }}"
+                    disabled />
             </div>
             <div class="form-group">
                 <label>Supervisor(s) <span class="required">*</span></label>
@@ -69,10 +74,44 @@
                     @endif
                 </select>
             </div>
+
+            <div class="form-group">
+                <label for="panel_1">Panel 1<span class="required">*</span></label>
+                <select class="form-control select2bs4 @error('panel_1') is-invalid @enderror" name="panel_1">
+                    @foreach ($lecturers as $panel)
+                        <option value={{ $panel->id }} @if (old('panel_1') == $panel->id) {{ 'selected disabled' }} @endif>
+                            {{ $panel->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                @error('panel_1')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="panel_2">Panel 2<span class="required">*</span></label>
+                <select class="form-control select2bs4 @error('panel_2') is-invalid @enderror" name="panel_2">
+                    @foreach ($lecturers as $panel)
+                        <option value={{ $panel->id }} @if (old('panel_2') == $panel->id) {{ 'selected disabled' }} @endif>
+                            {{ $panel->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                @error('panel_2')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
         </div>
         <div class="card-footer">
             <button type="button" class="btn btn-warning float-right" data-toggle="modal"
-                        data-target="#modal-registration">Edit registration</button>
+                data-target="#modal-registration">Edit registration</button>
         </div>
     </div>
     </div>
@@ -90,7 +129,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('registrations.update', $registration->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('registrations.update', $registration->id) }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
@@ -126,7 +166,8 @@
                         </div>
                         <div class="form-group">
                             <label>Abstract</label>
-                            <textarea class="form-control @error('abstract') is-invalid @enderror" rows="5" id="abstract" name="abstract">{{ $registration->abstract }}</textarea>
+                            <textarea class="form-control @error('abstract') is-invalid @enderror" rows="5" id="abstract"
+                                name="abstract">{{ $registration->abstract }}</textarea>
                             <small>Not more than 500 words</small>
                             <div id="the-count">
                                 <span id="current">0</span>
@@ -146,7 +187,7 @@
                                 <input type="file" class="@error('report') is-invalid @enderror custom-file-input "
                                     name="report" id="reportFileName" onchange="setfilename(this.value);">
                                 <small>File format allowed: PDF or DOCX only (&lt5MB)</small>
-                                
+
                                 @error('report')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -178,6 +219,40 @@
                                 </span>
                             @enderror
                         </div>
+
+                        {{-- <div class="form-group">
+                            <label for="panel_1">Panel 1<span class="required">*</span></label>
+                            <select class="form-control select2bs4 @error('panel_1') is-invalid @enderror" name="panel_1">
+                                @foreach ($lecturers as $panel)
+                                    <option value={{ $panel->id }} @if ($registration->panel_1_id == $panel->id) {{ 'selected' }} @endif>
+                                        {{ $panel->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+            
+                            @error('panel_1')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+            
+                        <div class="form-group">
+                            <label for="panel_2">Panel 2<span class="required">*</span></label>
+                            <select class="form-control select2bs4 @error('panel_2') is-invalid @enderror" name="panel_2">
+                                @foreach ($lecturers as $panel)
+                                    <option value={{ $panel->id }} @if ($registration->panel_2_id == $panel->id) {{ 'selected' }} @endif>
+                                        {{ $panel->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+            
+                            @error('panel_2')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div> --}}
 
                         <div class="modal-footer text-right">
                             <button type="submit" class="btn btn-primary">Save changes</button>

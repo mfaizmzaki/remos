@@ -156,12 +156,12 @@
                             </button>';
                         
                         $config = [
-                            'order' => [[3, 'asc']],
+                            'order' => [[2, 'asc']],
                         ];
                     @endphp
 
                     {{-- Minimal example / fill data using the component slot --}}
-                    <x-adminlte-datatable id="event_table" :heads="$heads" :config="$config">
+                    <x-adminlte-datatable id="event_table" :heads="$heads" :config="$config" theme="light" striped hoverable>
                         @foreach ($events as $event)
                             <tr>
                                 <td>{{ $event->department->department_name }}</td>
