@@ -27,7 +27,7 @@
     @endif
 
     <div class="mb-2">
-        <a href="{{ route('events.show', $registration->event_id) }}">Go Back</a>
+        <a href="{{ URL::previous() }}">Go Back</a>
     </div>
 
     <div class="card card-primary">
@@ -77,12 +77,10 @@
 
             <div class="form-group">
                 <label for="panel_1">Panel 1<span class="required">*</span></label>
-                <select class="form-control select2bs4 @error('panel_1') is-invalid @enderror" name="panel_1">
-                    @foreach ($lecturers as $panel)
-                        <option value={{ $panel->id }} @if (old('panel_1') == $panel->id) {{ 'selected disabled' }} @endif>
-                            {{ $panel->name }}
+                <select class="form-control select2bs4 @error('panel_1') is-invalid @enderror" name="panel_1" disabled>
+                        <option value={{ $registration->panel_1_id }} selected>
+                            {{ $registration->panel_1->name ?? "" }}
                         </option>
-                    @endforeach
                 </select>
 
                 @error('panel_1')
@@ -94,12 +92,10 @@
 
             <div class="form-group">
                 <label for="panel_2">Panel 2<span class="required">*</span></label>
-                <select class="form-control select2bs4 @error('panel_2') is-invalid @enderror" name="panel_2">
-                    @foreach ($lecturers as $panel)
-                        <option value={{ $panel->id }} @if (old('panel_2') == $panel->id) {{ 'selected disabled' }} @endif>
-                            {{ $panel->name }}
-                        </option>
-                    @endforeach
+                <select class="form-control select2bs4 @error('panel_2') is-invalid @enderror" name="panel_2" disabled>
+                    <option value={{ $registration->panel_2_id }} selected>
+                        {{ $registration->panel_2->name ?? "" }}
+                    </option>
                 </select>
 
                 @error('panel_2')
@@ -184,7 +180,7 @@
                             <label>Report Upload</label>
                             <div class="custom-file">
                                 <label class="custom-file-label" for="report">Choose file</label>
-                                <input type="file" class="@error('report') is-invalid @enderror custom-file-input "
+                                <input type="file" class="@error('report') is-invalid @enderror custom-file-input"
                                     name="report" id="reportFileName" onchange="setfilename(this.value);">
                                 <small>File format allowed: PDF or DOCX only (&lt5MB)</small>
 
@@ -219,8 +215,8 @@
                                 </span>
                             @enderror
                         </div>
-
-                        {{-- <div class="form-group">
+                        @if (Auth::user()->role_id == 4)
+                        <div class="form-group">
                             <label for="panel_1">Panel 1<span class="required">*</span></label>
                             <select class="form-control select2bs4 @error('panel_1') is-invalid @enderror" name="panel_1">
                                 @foreach ($lecturers as $panel)
@@ -252,8 +248,8 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        </div> --}}
-
+                        </div>
+                        @endif
                         <div class="modal-footer text-right">
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>

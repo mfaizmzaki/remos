@@ -37,10 +37,6 @@ Route::get('/admin', [AdminController::class, 'index'])
     ->middleware('admin')
     ->name('admin');
 
-Route::get('/student', [StudentController::class, 'index'])
-    ->middleware('student')
-    ->name('student');
-
 Route::get('/lecturer', [LecturerController::class, 'index'])
     ->middleware('lecturer')
     ->name('lecturer');
@@ -53,8 +49,11 @@ Route::get('/PGOffice', [PGOfficeController::class, 'index'])
     ->middleware('pgoffice')
     ->name('pgoffice');
 
+Route::resource('students', StudentController::class);
+
 Route::resource('events', EventController::class);
 
+Route::put('registrations_report/{id}', [RegistrationController::class, 'updateReport'])->name('update_report');
 Route::resource('registrations', RegistrationController::class);
 
 Route::get('/users/create-user', [UserController::class, 'index'])->name('create_user');

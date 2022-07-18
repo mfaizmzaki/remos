@@ -9,13 +9,14 @@ use App\Models\Student;
 use App\Models\Registration;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class RegistrationController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('pgoffice');
+        $this->middleware('pgoffice')->only('store');
     }
 
     /**
@@ -134,25 +135,49 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function updateReport(Request $request, $id){
+        $registration = Registration::find($id);
+
+        if($request->hasFile('report')){
+            Registration::where('id', $id)->update([
+                'report_upload_path' => $request->file('report')->storeAs('report', $registration->student_id.$registration->id.Carbon::now()->format('dmY').'.pdf')
+            ]);
+        }
+
+        return back()->with('update_message', 'Report successfully uploaded');
+    }
+
     public function update(Request $request, $id)
-    {
+    { 
         $registration = Registration::find($id);
 
         Student::where('user_id', $registration->student_id)->update([
             'matric_id' => $request->matric_id
         ]);
 
-        Registration::where('id', $id)->update([
-            'event_mode' => $request->event_mode,
-            'title' => $request->title,
-            'abstract' => $request->abstract,
-            'report_upload_path' => $request->file('report')->storeAs('report', $request->student.Carbon::now()->format('dmY').'.pdf'),
-            'sv_1_id' => $request->supervisor[0],
-            'sv_2_id' => $request->supervisor[1] ?? null,
-            'panel_1_id' => $request->panel_1,
-            'panel_2_id' => $request->panel_2
-        ]);
-
+        if($request->hasFile('report')){
+            Registration::where('id', $id)->update([
+                'event_mode' => $request->event_mode,
+                'title' => $request->title,
+                'abstract' => $request->abstract,
+                'report_upload_path' => $request->file('report')->storeAs('report', $request->student.$registration->id.Carbon::now()->format('dmY').'.pdf'),
+                'sv_1_id' => $request->supervisor[0],
+                'sv_2_id' => $request->supervisor[1] ?? null,
+                'panel_1_id' => $request->panel_1 ?? $registration->panel_1_id,
+                'panel_2_id' => $request->panel_2 ?? $registration->panel_2_id
+            ]);
+        }else {
+            Registration::where('id', $id)->update([
+                'event_mode' => $request->event_mode,
+                'title' => $request->title,
+                'abstract' => $request->abstract,
+                'sv_1_id' => $request->supervisor[0],
+                'sv_2_id' => $request->supervisor[1] ?? null,
+                'panel_1_id' => $request->panel_1 ?? $registration->panel_1_id,
+                'panel_2_id' => $request->panel_2 ?? $registration->panel_2_id
+            ]);
+        }
         return back()->with('update_message', 'Registration successfully updated');
     }
 
